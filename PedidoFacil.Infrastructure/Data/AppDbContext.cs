@@ -21,6 +21,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<Categoria>(e =>
             {
                 e.ToTable("categoria");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.Nome).IsRequired().HasMaxLength(100);
             });
 
@@ -28,6 +29,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<Produto>(e =>
             {
                 e.ToTable("produto");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.Nome).IsRequired().HasMaxLength(150);
                 e.Property(x => x.Descricao).HasMaxLength(500);
                 e.Property(x => x.ImagemUrl).HasMaxLength(500);
@@ -42,6 +44,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<Cliente>(e =>
             {
                 e.ToTable("cliente");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.Nome).IsRequired().HasMaxLength(150);
                 e.Property(x => x.Email).IsRequired().HasMaxLength(200);
                 e.Property(x => x.SenhaHash).IsRequired();
@@ -53,6 +56,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<Pedido>(e =>
             {
                 e.ToTable("pedido");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.ValorTotal).HasPrecision(10, 2);
                 e.Property(x => x.Endereco).IsRequired().HasMaxLength(300);
                 e.Property(x => x.Status).HasConversion<string>().HasMaxLength(30);
@@ -68,6 +72,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<ItemPedido>(e =>
             {
                 e.ToTable("item_pedido");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.NomeProduto).IsRequired().HasMaxLength(150);
                 e.Property(x => x.PrecoUnitario).HasPrecision(10, 2);
                 e.Property(x => x.Observacao).HasMaxLength(300);
@@ -85,6 +90,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<WebhookAssinatura>(e =>
             {
                 e.ToTable("webhook_assinatura");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.Url).IsRequired().HasMaxLength(500);
                 e.Property(x => x.Segredo).IsRequired().HasMaxLength(200);
                 e.Property(x => x.Eventos).IsRequired().HasMaxLength(500);
@@ -94,6 +100,7 @@ namespace PedidoFacil.Infrastructure.Data
             modelBuilder.Entity<WebhookEntrega>(e =>
             {
                 e.ToTable("webhook_entrega");
+                e.HasKey(x => x.Id);
                 e.Property(x => x.Evento).IsRequired().HasMaxLength(100);
                 e.Property(x => x.Payload).IsRequired();
                 e.Property(x => x.Status).HasConversion<string>().HasMaxLength(30);
@@ -117,4 +124,3 @@ namespace PedidoFacil.Infrastructure.Data
         }
     }
 }
-

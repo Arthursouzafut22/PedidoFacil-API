@@ -8,8 +8,6 @@ namespace PedidoFacil.Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid ClienteId { get; set; }
-
-        [ForeignKey(nameof(ClienteId))]
         public Cliente Cliente { get; set; } = null!;
         public StatusPedido Status { get; private set; } = StatusPedido.Pendente;
         public decimal ValorTotal { get; private set; }
