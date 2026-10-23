@@ -1,0 +1,6 @@
+@PedidoFacil_HostAddress = http://localhost:5067
+
+GET {{PedidoFacil_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

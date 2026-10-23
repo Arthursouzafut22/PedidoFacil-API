@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PedidoFacil.Application/PedidoFacil.Application.csproj" />
+  <Project Path="PedidoFacil.Domain/PedidoFacil.Domain.csproj" />
+  <Project Path="PedidoFacil.Infrastructure/PedidoFacil.Infrastructure.csproj" />
+  <Project Path="PedidoFacil/PedidoFacil.csproj" />
+</Solution>
