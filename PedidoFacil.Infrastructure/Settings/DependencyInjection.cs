@@ -9,7 +9,7 @@ namespace PedidoFacil.Infrastructure.Settings
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var stringConnection = configuration.GetConnectionString("StringConnection");
+            var stringConnection = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<AppDbContext>(options =>
             {

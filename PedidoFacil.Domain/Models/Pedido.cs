@@ -1,6 +1,5 @@
 ﻿using PedidoFacil.Domain.Enums;
 using PedidoFacil.Domain.Exceptions;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PedidoFacil.Domain.Models
 {
