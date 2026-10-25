@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PedidoFacil.Application.Interfaces;
+using PedidoFacil.Application.Services.Cliente;
+using PedidoFacil.Domain.Interfaces;
 using PedidoFacil.Infrastructure.Data;
+using PedidoFacil.Infrastructure.Repositories;
 
 namespace PedidoFacil.Infrastructure.Settings
 {
@@ -15,6 +19,9 @@ namespace PedidoFacil.Infrastructure.Settings
             {
                 options.UseNpgsql(stringConnection);
             });
+
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IClienteService, ClienteService>();
 
             return services;
         }

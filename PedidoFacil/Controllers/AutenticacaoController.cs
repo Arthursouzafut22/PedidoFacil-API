@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PedidoFacil.Application.DTOS;
+using PedidoFacil.Application.DTOS.Cliente;
+using PedidoFacil.Application.Interfaces;
 
 namespace PedidoFacil.Controllers
 {
@@ -7,10 +8,15 @@ namespace PedidoFacil.Controllers
     [Route("api/autenticacao")]
     public class AutenticacaoController : ControllerBase
     {
-        [HttpGet("registrar")]
-        public async Task<ActionResult> Registrar([FromBody] CriarClienteDTO cliente)
+        private readonly IClienteService _service;
+        public AutenticacaoController(IClienteService service) => _service = service;
+
+
+        [HttpPost("registrar")]
+        public async Task<ActionResult> Registrar([FromBody] CriarClienteDTO dto)
         {
-            return StatusCode(200, null);
+            var cliente = await _service.Registrar(dto);
+            return StatusCode(cliente.StatusCode, cliente);
         }
     }
 }

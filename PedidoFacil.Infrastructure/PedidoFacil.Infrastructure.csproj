@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PedidoFacil.Application\PedidoFacil.Application.csproj" />
     <ProjectReference Include="..\PedidoFacil.Domain\PedidoFacil.Domain.csproj" />
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

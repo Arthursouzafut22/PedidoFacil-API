@@ -12,5 +12,20 @@
 
         public static ApiResposta<T> NotFound(string mensagem) =>
             new() { Sucesso = false, Mensagem = mensagem, StatusCode = 404 };
+
+        public static ApiResposta<T> Unauthorized(string mensagem) =>
+            new() { Sucesso = false, Mensagem = mensagem, StatusCode = 401 };
+
+        public static ApiResposta<T> Conflict(string mensagem) =>
+            new() { Sucesso = false, Mensagem = mensagem, StatusCode = 409 };
+
+        public static ApiResposta<T> Forbidden(string mensagem) =>
+             new() { Sucesso = false, Mensagem = mensagem, StatusCode = 403 };
+
+        public static ApiResposta<T> NoContent(string mensagem) =>
+            new() { Sucesso = false, Mensagem = mensagem, StatusCode = 204 };
+
+        public static ApiResposta<T> BadRequest(string mensagem) =>
+            new() { Sucesso = false, Mensagem = mensagem, StatusCode = 400 };
     }
 }
