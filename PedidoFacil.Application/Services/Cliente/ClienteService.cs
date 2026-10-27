@@ -31,7 +31,7 @@ namespace PedidoFacil.Application.Services.Cliente
             if(dto.Senha != dto.ConfirmarSenha)
             {
                 _logger.LogWarning("Tentativa de cadastro com senhas divergentes.");
-                return ApiResposta<ClienteRespostaDTO>.Conflict(RespostaMensagem.SenhasNaoConferem);
+                return ApiResposta<ClienteRespostaDTO>.BadRequest(RespostaMensagem.SenhasNaoConferem);
             }
 
             var clienteModelo = ClienteMapper.ModeloCliente(dto);
