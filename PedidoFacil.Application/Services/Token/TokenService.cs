@@ -24,7 +24,8 @@ namespace PedidoFacil.Application.Services.Token
                 new("id", cliente.Id.ToString()),
                 new("nome", cliente.Email),
                 new("email", cliente.Email),
-                new("telefone", cliente.Telefone)
+                new("telefone", cliente.Telefone),
+                new("role", cliente.Role.ToString())
             };
 
             var token = new JwtSecurityToken(

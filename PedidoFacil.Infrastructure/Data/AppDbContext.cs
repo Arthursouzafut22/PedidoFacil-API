@@ -49,6 +49,7 @@ namespace PedidoFacil.Infrastructure.Data
                 e.Property(x => x.Email).IsRequired().HasMaxLength(200);
                 e.Property(x => x.SenhaHash).IsRequired();
                 e.Property(x => x.Telefone).HasMaxLength(20);
+                e.Property(x => x.Role).HasConversion<string>().HasMaxLength(30);
                 e.HasIndex(x => x.Email).IsUnique();
             });
 
@@ -106,19 +107,15 @@ namespace PedidoFacil.Infrastructure.Data
                 e.Property(x => x.Status).HasConversion<string>().HasMaxLength(30);
                 e.Property(x => x.UltimoErro).HasMaxLength(1000);
 
-                // 1 assinatura -> N entregas
                 e.HasOne(x => x.Assinatura)
                  .WithMany(a => a.Entregas)
                  .HasForeignKey(x => x.AssinaturaId)
                  .OnDelete(DeleteBehavior.Cascade);
 
-                // 1 pedido -> N entregas
                 e.HasOne(x => x.Pedido)
                  .WithMany(p => p.WebhookEntregas)
                  .HasForeignKey(x => x.PedidoId)
                  .OnDelete(DeleteBehavior.Cascade);
-
-                // O dispatcher busca sempre "pendentes cuja hora de tentar já chegou"
                 e.HasIndex(x => new { x.Status, x.ProximaTentativaEm });
             });
         }

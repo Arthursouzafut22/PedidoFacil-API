@@ -1,4 +1,5 @@
-﻿
+﻿using PedidoFacil.Domain.Enums;
+
 namespace PedidoFacil.Domain.Models
 {
     public class Cliente
@@ -9,7 +10,14 @@ namespace PedidoFacil.Domain.Models
         public string SenhaHash { get; set; } = string.Empty;
         public string Telefone { get; set; } = string.Empty;
         public string? EnderecoPadrao { get; set; }
+        public UsuarioRole Role { get; private set; } = UsuarioRole.Cliente;
         public List<Pedido> Pedidos { get; set; } = new();
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+
+        public void PromoverParaAdministrador()
+        {
+            Role = UsuarioRole.Administrador;
+        }
+  
     }
 }
