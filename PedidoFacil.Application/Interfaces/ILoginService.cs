@@ -6,5 +6,6 @@ namespace PedidoFacil.Application.Interfaces
     public interface ILoginService
     {
         Task<ApiResposta<LoginRespostaDTO>> Login(LoginDTO dto);
+        Task<ApiResposta<TokenRespostaDTO>> Refresh(string refreshToken);
     }
 }

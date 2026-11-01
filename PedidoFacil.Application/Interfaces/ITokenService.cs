@@ -5,5 +5,6 @@ namespace PedidoFacil.Application.Interfaces
     public interface ITokenService
     {
         string GerarToken(Cliente cliente);
+        string GerarRefreshToken();
     }
 }

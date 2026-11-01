@@ -4,9 +4,17 @@ namespace PedidoFacil.Application.Mappers
 {
     public static class LoginMapper
     {
-        public static LoginRespostaDTO MapearParaLoginRespostaDTO(string token, int expiracaoToken)
+        public static LoginRespostaDTO MapearParaLoginRespostaDTO(
+            string token,
+            string refreshToken,
+            int expiracaoToken)
         {
-            return new LoginRespostaDTO(token, true, DateTime.UtcNow.AddHours(expiracaoToken));
+            return new LoginRespostaDTO(
+                token,
+                refreshToken,
+                true,
+                DateTime.UtcNow.AddHours(expiracaoToken)
+            );
         }
     }
 }

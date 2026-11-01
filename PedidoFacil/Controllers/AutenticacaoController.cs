@@ -30,5 +30,12 @@ namespace PedidoFacil.Controllers
             var login = await _loginService.Login(dto);
             return StatusCode(login.StatusCode, login);
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshDTO refreshToken)
+        {
+            var refresh = await _loginService.Refresh(refreshToken.RefreshToken);
+            return StatusCode(refresh.StatusCode, refresh);
+        }
     }
 }

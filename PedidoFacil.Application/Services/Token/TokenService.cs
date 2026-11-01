@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using PedidoFacil.Application.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using ClienteModel = PedidoFacil.Domain.Models.Cliente;
 
@@ -17,7 +18,7 @@ namespace PedidoFacil.Application.Services.Token
             var chaveSecreta = _configuration.GetValue<string>("JwtSettings:SecretKey")!;
             var chaveSeguranca = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveSecreta));
             var credenciaisAssinatura = new SigningCredentials(chaveSeguranca, SecurityAlgorithms.HmacSha256);
-            var expiracaoToken = _configuration.GetValue<int>("JwtSettings:ExpirationHours");
+            var expiracaoToken = _configuration.GetValue<int>("JwtSettings:ExpiracaoMinutos");
 
             var claims = new List<Claim>()
             {
@@ -28,13 +29,19 @@ namespace PedidoFacil.Application.Services.Token
                 new("role", cliente.Role.ToString())
             };
 
-            var token = new JwtSecurityToken(
+            var token = new JwtSecurityToken
+            (
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(expiracaoToken),
+                expires: DateTime.UtcNow.AddMinutes(expiracaoToken),
                 signingCredentials: credenciaisAssinatura
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public string GerarRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
     }
 }

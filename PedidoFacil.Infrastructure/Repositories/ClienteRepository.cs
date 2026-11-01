@@ -23,5 +23,7 @@ namespace PedidoFacil.Infrastructure.Repositories
         public async Task<Cliente?> EncontrarClientePorEmail(string email) =>
             await _context.Clientes.FirstOrDefaultAsync(c => c.Email == email);
 
+        public async Task<Cliente?> EncontrarClientePorId(Guid id) =>
+            await _context.Clientes.FirstOrDefaultAsync(c => c.Id == id);
     }
 }

@@ -14,6 +14,7 @@ namespace PedidoFacil.Infrastructure.Data
         public DbSet<ItemPedido> ItensPedido => Set<ItemPedido>();
         public DbSet<WebhookAssinatura> WebhookAssinaturas => Set<WebhookAssinatura>();
         public DbSet<WebhookEntrega> WebhookEntregas => Set<WebhookEntrega>();
+        public DbSet<RefreshToken> RefreshToken => Set<RefreshToken>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -117,6 +118,21 @@ namespace PedidoFacil.Infrastructure.Data
                  .HasForeignKey(x => x.PedidoId)
                  .OnDelete(DeleteBehavior.Cascade);
                 e.HasIndex(x => new { x.Status, x.ProximaTentativaEm });
+            });
+
+            // ---------- RefreshToken ----------
+            modelBuilder.Entity<RefreshToken>(e =>
+            {
+                e.ToTable("refresh_token");
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Token).IsRequired().HasMaxLength(500);
+                e.Property(x => x.DataExpiracao).IsRequired();
+                e.Property(x => x.EstaRevogado).IsRequired();
+                e.HasIndex(x => x.Token).IsUnique();
+
+                e.HasOne<Cliente>().WithMany()
+                .HasForeignKey(x => x.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

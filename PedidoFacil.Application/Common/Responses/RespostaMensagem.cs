@@ -8,5 +8,6 @@
         public static string SenhasNaoConferem { get; } = "As senhas não conferem.";
         public static string EmailOuSenhaInvalido { get; } = "E-mail ou senha inválidos.";
         public static string LoginRealizadoComSucesso { get; } = "Login realizado com sucesso.";
+        public static string RefreshTokenExpiradoOuInvalido { get; } = "Refresh Token não encontrado ou expirado.";
     }
 }

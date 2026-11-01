@@ -7,5 +7,6 @@ namespace PedidoFacil.Domain.Interfaces
         Task<Cliente> Criar(Cliente cliente);
         Task<bool> EmailJaExiste(string email);
         Task<Cliente?> EncontrarClientePorEmail(string email);
+        Task<Cliente?> EncontrarClientePorId(Guid id);
     }
 }

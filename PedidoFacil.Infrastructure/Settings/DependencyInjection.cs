@@ -23,6 +23,7 @@ namespace PedidoFacil.Infrastructure.Settings
             });
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ILoginService, LoginService>();

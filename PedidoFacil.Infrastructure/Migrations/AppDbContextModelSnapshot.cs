@@ -204,6 +204,36 @@ namespace PedidoFacil.Infrastructure.Migrations
                     b.ToTable("produto", (string)null);
                 });
 
+            modelBuilder.Entity("PedidoFacil.Domain.Models.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DataExpiracao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("EstaRevogado")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.ToTable("refresh_token", (string)null);
+                });
+
             modelBuilder.Entity("PedidoFacil.Domain.Models.WebhookAssinatura", b =>
                 {
                     b.Property<Guid>("Id")
@@ -331,6 +361,15 @@ namespace PedidoFacil.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("PedidoFacil.Domain.Models.RefreshToken", b =>
+                {
+                    b.HasOne("PedidoFacil.Domain.Models.Cliente", null)
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.WebhookEntrega", b =>
