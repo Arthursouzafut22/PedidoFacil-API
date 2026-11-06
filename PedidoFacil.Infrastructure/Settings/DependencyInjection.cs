@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PedidoFacil.Application.Interfaces;
+using PedidoFacil.Application.Services.Categoria;
 using PedidoFacil.Application.Services.Cliente;
 using PedidoFacil.Application.Services.Login;
 using PedidoFacil.Application.Services.Token;
@@ -24,9 +25,11 @@ namespace PedidoFacil.Infrastructure.Settings
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
 
             return services;
         }
