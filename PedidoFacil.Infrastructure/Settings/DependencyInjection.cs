@@ -23,10 +23,10 @@ namespace PedidoFacil.Infrastructure.Settings
                 options.UseNpgsql(stringConnection);
             });
 
-            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-            services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ICategoriaService, CategoriaService>();

@@ -9,7 +9,7 @@ namespace PedidoFacil.Infrastructure.Data
 
         public DbSet<Categoria> Categorias => Set<Categoria>();
         public DbSet<Produto> Produtos => Set<Produto>();
-        public DbSet<Cliente> Clientes => Set<Cliente>();
+        public DbSet<Usuario> Clientes => Set<Usuario>();
         public DbSet<Pedido> Pedidos => Set<Pedido>();
         public DbSet<ItemPedido> ItensPedido => Set<ItemPedido>();
         public DbSet<WebhookAssinatura> WebhookAssinaturas => Set<WebhookAssinatura>();
@@ -24,6 +24,10 @@ namespace PedidoFacil.Infrastructure.Data
                 e.ToTable("categoria");
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Nome).IsRequired().HasMaxLength(100);
+                e.HasOne(x => x.Usuario)
+                 .WithMany()
+                 .HasForeignKey(x => x.UsuarioId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ---------- Produto ----------
@@ -39,12 +43,16 @@ namespace PedidoFacil.Infrastructure.Data
                  .WithMany(c => c.Produtos)
                  .HasForeignKey(x => x.CategoriaId)
                  .OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(x => x.Usuario)
+                 .WithMany()
+                 .HasForeignKey(x => x.UsuarioId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // ---------- Cliente ----------
-            modelBuilder.Entity<Cliente>(e =>
+            // ---------- Usuarios ----------
+            modelBuilder.Entity<Usuario>(e =>
             {
-                e.ToTable("cliente");
+                e.ToTable("usuarios");
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Nome).IsRequired().HasMaxLength(150);
                 e.Property(x => x.Email).IsRequired().HasMaxLength(200);
@@ -130,7 +138,7 @@ namespace PedidoFacil.Infrastructure.Data
                 e.Property(x => x.EstaRevogado).IsRequired();
                 e.HasIndex(x => x.Token).IsUnique();
 
-                e.HasOne<Cliente>().WithMany()
+                e.HasOne<Usuario>().WithMany()
                 .HasForeignKey(x => x.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade);
             });

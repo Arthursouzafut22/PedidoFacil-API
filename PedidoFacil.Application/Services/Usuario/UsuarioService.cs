@@ -7,39 +7,39 @@ using PedidoFacil.Domain.Interfaces;
 
 namespace PedidoFacil.Application.Services.Cliente
 {
-    public class ClienteService : IClienteService
+    public class UsuarioService : IUsuarioService
     {
-        private readonly IClienteRepository _repository;
-        private readonly ILogger<ClienteService> _logger;
+        private readonly IUsuarioRepository _repository;
+        private readonly ILogger<UsuarioService> _logger;
 
-        public ClienteService(IClienteRepository repository, ILogger<ClienteService> logger)
+        public UsuarioService(IUsuarioRepository repository, ILogger<UsuarioService> logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        public async Task<ApiResposta<ClienteRespostaDTO>> Registrar(CriarClienteDTO dto)
+        public async Task<ApiResposta<UsuarioRespostaDTO>> Registrar(CriarUsuarioDTO dto)
         {
             var emailJaExiste = await _repository.EmailJaExiste(dto.Email);
 
             if (emailJaExiste)
             {
                 _logger.LogWarning("Tentativa de cadastro com um e-mail já cadastrado no banco de dados.");
-                return ApiResposta<ClienteRespostaDTO>.Conflict(RespostaMensagem.EmailJaCadastrado);
+                return ApiResposta<UsuarioRespostaDTO>.Conflict(RespostaMensagem.EmailJaCadastrado);
             }
 
             if(dto.Senha != dto.ConfirmarSenha)
             {
                 _logger.LogWarning("Tentativa de cadastro com senhas divergentes.");
-                return ApiResposta<ClienteRespostaDTO>.BadRequest(RespostaMensagem.SenhasNaoConferem);
+                return ApiResposta<UsuarioRespostaDTO>.BadRequest(RespostaMensagem.SenhasNaoConferem);
             }
 
-            var clienteModelo = ClienteMapper.ModeloCliente(dto);
+            var clienteModelo = UsuarioMapper.ModeloCliente(dto);
 
             var clienteCriado = await _repository.Criar(clienteModelo);
-            var resposta = ClienteMapper.MapearParaClienteRespostaDTO(clienteCriado);
+            var resposta = UsuarioMapper.MapearParaClienteRespostaDTO(clienteCriado);
 
-            return ApiResposta<ClienteRespostaDTO>.Ok(resposta, RespostaMensagem.ClienteCriadoComSucesso);
+            return ApiResposta<UsuarioRespostaDTO>.Ok(resposta, RespostaMensagem.ClienteCriadoComSucesso);
         }
     }
 }

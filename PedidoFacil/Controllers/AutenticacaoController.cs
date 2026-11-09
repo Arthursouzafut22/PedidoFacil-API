@@ -9,16 +9,16 @@ namespace PedidoFacil.Controllers
     [Route("api/autenticacao")]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly IClienteService _clienteservice;
+        private readonly IUsuarioService _clienteservice;
         private readonly ILoginService _loginService;
-        public AutenticacaoController(IClienteService service, ILoginService loginService)
+        public AutenticacaoController(IUsuarioService service, ILoginService loginService)
         {
             _clienteservice = service;
             _loginService = loginService;
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult> Registrar([FromBody] CriarClienteDTO dto)
+        public async Task<ActionResult> Registrar([FromBody] CriarUsuarioDTO dto)
         {
             var cliente = await _clienteservice.Registrar(dto);
             return StatusCode(cliente.StatusCode, cliente);

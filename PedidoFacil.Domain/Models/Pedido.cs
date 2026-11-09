@@ -7,7 +7,7 @@ namespace PedidoFacil.Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid ClienteId { get; set; }
-        public Cliente Cliente { get; set; } = null!;
+        public Usuario Cliente { get; set; } = null!;
         public StatusPedido Status { get; private set; } = StatusPedido.Pendente;
         public decimal ValorTotal { get; private set; }
         public string Endereco { get; set; } = string.Empty;

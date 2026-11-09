@@ -3,8 +3,8 @@ using PedidoFacil.Application.DTOS.Cliente;
 
 namespace PedidoFacil.Application.Interfaces
 {
-    public interface IClienteService
+    public interface IUsuarioService
     {
-        Task<ApiResposta<ClienteRespostaDTO>> Registrar(CriarClienteDTO dto);
+        Task<ApiResposta<UsuarioRespostaDTO>> Registrar(CriarUsuarioDTO dto);
     }
 }

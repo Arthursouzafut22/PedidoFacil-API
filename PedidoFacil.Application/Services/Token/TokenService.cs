@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using ClienteModel = PedidoFacil.Domain.Models.Cliente;
+using UsuarioModel = PedidoFacil.Domain.Models.Usuario;
 
 namespace PedidoFacil.Application.Services.Token
 {
@@ -13,7 +13,7 @@ namespace PedidoFacil.Application.Services.Token
     {
         private readonly IConfiguration _configuration;
         public TokenService(IConfiguration configuration) => _configuration = configuration;
-        public string GerarToken(ClienteModel cliente)
+        public string GerarToken(UsuarioModel usuario)
         {
             var chaveSecreta = _configuration.GetValue<string>("JwtSettings:SecretKey")!;
             var chaveSeguranca = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveSecreta));
@@ -22,11 +22,11 @@ namespace PedidoFacil.Application.Services.Token
 
             var claims = new List<Claim>()
             {
-                new("id", cliente.Id.ToString()),
-                new("nome", cliente.Email),
-                new("email", cliente.Email),
-                new("telefone", cliente.Telefone),
-                new("role", cliente.Role.ToString())
+                new("id", usuario.Id.ToString()),
+                new("nome", usuario.Nome),
+                new("email", usuario.Email),
+                new("telefone", usuario.Telefone),
+                new("role", usuario.Role.ToString())
             };
 
             var token = new JwtSecurityToken

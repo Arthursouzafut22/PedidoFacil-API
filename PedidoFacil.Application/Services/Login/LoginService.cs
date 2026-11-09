@@ -8,22 +8,22 @@ using PedidoFacil.Application.Seguranca;
 using PedidoFacil.Application.Services.Cliente;
 using PedidoFacil.Domain.Interfaces;
 using PedidoFacil.Domain.Models;
-using ClienteModel = PedidoFacil.Domain.Models.Cliente;
+using ClienteModel = PedidoFacil.Domain.Models.Usuario;
 
 namespace PedidoFacil.Application.Services.Login
 {
     public class LoginService : ILoginService
     {
-        private readonly IClienteRepository _repository;
+        private readonly IUsuarioRepository _repository;
         private readonly IRefreshTokenRepository _refreshTokens;
         private readonly ITokenService _token;
-        private readonly ILogger<ClienteService> _logger;
+        private readonly ILogger<UsuarioService> _logger;
         private readonly IConfiguration _configuration;
 
         public LoginService(
-            IClienteRepository repository,
+            IUsuarioRepository repository,
             IRefreshTokenRepository refreshTokens,
-            ITokenService token, ILogger<ClienteService> logger,
+            ITokenService token, ILogger<UsuarioService> logger,
             IConfiguration configuration)
         {
             _repository = repository;
@@ -34,7 +34,7 @@ namespace PedidoFacil.Application.Services.Login
         }
         public async Task<ApiResposta<LoginRespostaDTO>> Login(LoginDTO dto)
         {
-            var clienteEncontrado = await _repository.EncontrarClientePorEmail(dto.Email.ToLower());
+            var clienteEncontrado = await _repository.EncontrarUsuarioPorEmail(dto.Email.ToLower());
 
             if (clienteEncontrado is null)
             {
@@ -65,7 +65,7 @@ namespace PedidoFacil.Application.Services.Login
                 return ApiResposta<TokenRespostaDTO>.Unauthorized(RespostaMensagem.RefreshTokenExpiradoOuInvalido);
             }
 
-            var cliente = await _repository.EncontrarClientePorId(obterRefreshToken.ClienteId);
+            var cliente = await _repository.EncontrarUsuarioPorId(obterRefreshToken.ClienteId);
 
             if (cliente is null)
             {

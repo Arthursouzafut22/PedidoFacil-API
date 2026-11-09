@@ -4,10 +4,10 @@ using PedidoFacil.Application.Seguranca;
 
 namespace PedidoFacil.Application.Mappers
 {
-    public static class ClienteMapper
+    public static class UsuarioMapper
     {
-        public static Cliente ModeloCliente(CriarClienteDTO dto) =>
-            new Cliente
+        public static Usuario ModeloCliente(CriarUsuarioDTO dto) =>
+            new Usuario
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
@@ -15,7 +15,7 @@ namespace PedidoFacil.Application.Mappers
                 SenhaHash = BcryptService.GerarHashSenha(dto.Senha)
             };
 
-        public static ClienteRespostaDTO MapearParaClienteRespostaDTO(Cliente cliente) =>
-            new ClienteRespostaDTO(cliente.Nome, cliente.Email, cliente.Telefone);
+        public static UsuarioRespostaDTO MapearParaClienteRespostaDTO(Usuario cliente) =>
+            new UsuarioRespostaDTO(cliente.Nome, cliente.Email, cliente.Telefone);
     }
 }

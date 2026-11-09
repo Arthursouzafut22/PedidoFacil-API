@@ -36,53 +36,14 @@ namespace PedidoFacil.Infrastructure.Migrations
                     b.Property<int>("Ordem")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("categoria", (string)null);
-                });
-
-            modelBuilder.Entity("PedidoFacil.Domain.Models.Cliente", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("UsuarioId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("EnderecoPadrao")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<string>("SenhaHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+                    b.HasIndex("UsuarioId");
 
-                    b.ToTable("cliente", (string)null);
+                    b.ToTable("categoria", (string)null);
                 });
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.ItemPedido", b =>
@@ -197,9 +158,14 @@ namespace PedidoFacil.Infrastructure.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
 
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoriaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("produto", (string)null);
                 });
@@ -232,6 +198,50 @@ namespace PedidoFacil.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("refresh_token", (string)null);
+                });
+
+            modelBuilder.Entity("PedidoFacil.Domain.Models.Usuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("EnderecoPadrao")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("SenhaHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("usuarios", (string)null);
                 });
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.WebhookAssinatura", b =>
@@ -322,6 +332,17 @@ namespace PedidoFacil.Infrastructure.Migrations
                     b.ToTable("webhook_entrega", (string)null);
                 });
 
+            modelBuilder.Entity("PedidoFacil.Domain.Models.Categoria", b =>
+                {
+                    b.HasOne("PedidoFacil.Domain.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("PedidoFacil.Domain.Models.ItemPedido", b =>
                 {
                     b.HasOne("PedidoFacil.Domain.Models.Pedido", "Pedido")
@@ -343,7 +364,7 @@ namespace PedidoFacil.Infrastructure.Migrations
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.Pedido", b =>
                 {
-                    b.HasOne("PedidoFacil.Domain.Models.Cliente", "Cliente")
+                    b.HasOne("PedidoFacil.Domain.Models.Usuario", "Cliente")
                         .WithMany("Pedidos")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -360,12 +381,20 @@ namespace PedidoFacil.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PedidoFacil.Domain.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Categoria");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.RefreshToken", b =>
                 {
-                    b.HasOne("PedidoFacil.Domain.Models.Cliente", null)
+                    b.HasOne("PedidoFacil.Domain.Models.Usuario", null)
                         .WithMany()
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -396,16 +425,16 @@ namespace PedidoFacil.Infrastructure.Migrations
                     b.Navigation("Produtos");
                 });
 
-            modelBuilder.Entity("PedidoFacil.Domain.Models.Cliente", b =>
-                {
-                    b.Navigation("Pedidos");
-                });
-
             modelBuilder.Entity("PedidoFacil.Domain.Models.Pedido", b =>
                 {
                     b.Navigation("Itens");
 
                     b.Navigation("WebhookEntregas");
+                });
+
+            modelBuilder.Entity("PedidoFacil.Domain.Models.Usuario", b =>
+                {
+                    b.Navigation("Pedidos");
                 });
 
             modelBuilder.Entity("PedidoFacil.Domain.Models.WebhookAssinatura", b =>

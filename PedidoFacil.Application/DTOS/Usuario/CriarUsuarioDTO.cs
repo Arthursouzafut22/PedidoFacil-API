@@ -2,7 +2,7 @@
 
 namespace PedidoFacil.Application.DTOS.Cliente
 {
-    public record CriarClienteDTO(
+    public record CriarUsuarioDTO(
         [Required(ErrorMessage = "O nome é obrigatório.")]
         [MaxLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres.")]
         string Nome,

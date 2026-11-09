@@ -17,37 +17,48 @@ namespace PedidoFacil.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> BuscarTodasCategoria()
         {
-            return StatusCode(200);
+            var usuarioId = User.FindFirst("id")!.Value;
+            var categorias = await _service.BuscarTodasCategoria(Guid.Parse(usuarioId));
+            return StatusCode(categorias.StatusCode, categorias);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> BuscarCategoriaPorId(Guid id)
+        [HttpGet("por-id/{id?}")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<ActionResult> BuscarCategoriaPorId(Guid? id)
         {
-            return StatusCode(200);
+            var usuarioId = User.FindFirst("id")!.Value;
+            var categoria = await _service.BuscarCategoriaPorId(id, Guid.Parse(usuarioId));
+            return StatusCode(categoria.StatusCode, categoria);
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> CadastrarCategoria([FromBody] CriarCategoriaDTO dto)
         {
-            var categoria = await _service.CadastrarCategoria(dto);
+            var usuarioId = User.FindFirst("id")!.Value;
+            var categoria = await _service.CadastrarCategoria(dto, Guid.Parse(usuarioId));
             return StatusCode(categoria.StatusCode, categoria);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id?}")]
         [Authorize(Roles = "Administrador")]
-        public async Task<ActionResult> AtualizarCategoria(Guid id)
+        public async Task<ActionResult> AtualizarCategoria(Guid? id, [FromBody] AtualizarCategoriaDTO dto)
         {
-            return StatusCode(200);
+            var usuarioId = User.FindFirst("id")!.Value;
+            var categoria = await _service.AtualizarCategoria(dto, id, Guid.Parse(usuarioId));
+            return StatusCode(categoria.StatusCode, categoria);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id?}")]
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> DeletarCategoria(Guid id)
         {
-            return StatusCode(200);
+            var usuarioId = User.FindFirst("id")!.Value;
+            var categoria = await _service.DeletarCategoria(id, Guid.Parse(usuarioId));
+            return StatusCode(categoria.StatusCode, categoria);
         }
     }
 }

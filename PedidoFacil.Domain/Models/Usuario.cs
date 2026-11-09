@@ -2,7 +2,7 @@
 
 namespace PedidoFacil.Domain.Models
 {
-    public class Cliente
+    public class Usuario
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Nome { get; set; } = string.Empty;

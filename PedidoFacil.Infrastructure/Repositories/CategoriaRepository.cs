@@ -16,14 +16,14 @@ namespace PedidoFacil.Infrastructure.Repositories
             return categoria;
         }
 
-        public async Task<Categoria?> BuscarCategoriaPorId(Guid id)
+        public async Task<Categoria?> BuscarCategoriaPorId(Guid? id)
         {
             return await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Categoria>> BuscarCategorias()
+        public async Task<IEnumerable<Categoria>> BuscarCategorias(Guid usuarioId)
         {
-            return await _context.Categorias.ToListAsync();
+            return await _context.Categorias.Where(x => x.UsuarioId == usuarioId).ToListAsync();
         }
 
         public async Task<Categoria?> Cadastrar(Categoria categoria)
@@ -33,22 +33,26 @@ namespace PedidoFacil.Infrastructure.Repositories
             return categoria;
         }
 
-        public async Task Deletar(Guid id)
+        public async Task Deletar(Categoria categoria)
         {
-            var categoria = await BuscarCategoriaPorId(id);
-            if (categoria is null) return;
             _context.Categorias.Remove(categoria);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Categoria?> EncontrarCategoriaPorNome(string nome)
+        public async Task<Categoria?> EncontrarCategoriaPorNome(string nome, Guid? usuarioId)
         {
-            return await _context.Categorias.FirstOrDefaultAsync(x => x.Nome.ToLower() == nome.ToLower());
+            return await _context.Categorias.FirstOrDefaultAsync(x =>
+                x.Nome.ToLower() == nome.ToLower() &&
+                x.UsuarioId == usuarioId
+            );
         }
 
-        public async Task<Categoria?> EncontrarCategoriaPorOrdem(int ordem)
+        public async Task<Categoria?> EncontrarCategoriaPorOrdem(int ordem, Guid? usuarioId)
         {
-            return await _context.Categorias.FirstOrDefaultAsync(x => x.Ordem == ordem);
+            return await _context.Categorias.FirstOrDefaultAsync(x =>
+                x.Ordem == ordem &&
+                x.UsuarioId == usuarioId
+            );
         }
     }
 }

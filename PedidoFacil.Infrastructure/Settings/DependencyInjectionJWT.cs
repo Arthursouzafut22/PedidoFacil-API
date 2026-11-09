@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 
@@ -11,7 +11,9 @@ namespace PedidoFacil.Infrastructure.Settings
 {
     public static class DependencyInjectionJWT
     {
-        public static IServiceCollection AddInfrastructureJWT(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureJWT(
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
             var secretKey = configuration.GetValue<string>("JwtSettings:SecretKey")
                 ?? throw new InvalidOperationException("SecretKey não configurada.");
@@ -27,7 +29,9 @@ namespace PedidoFacil.Infrastructure.Settings
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(secretKey)),
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
 
                     options.Events = new JwtBearerEvents
@@ -35,41 +39,38 @@ namespace PedidoFacil.Infrastructure.Settings
                         OnChallenge = context =>
                         {
                             context.HandleResponse();
-                            context.Response.StatusCode = 401;
-                            context.Response.ContentType = "application/json";
-                            var mensagem = JsonSerializer.Serialize(new
-                            {
-                                status = 401,
-                                message = "Acesso negado! Token não informado."
-                            });
-                            return context.Response.WriteAsync(mensagem);
-                        },
 
-                        OnAuthenticationFailed = context =>
-                        {
-                            context.Response.StatusCode = 401;
+                            var mensagem = context.AuthenticateFailure switch
+                            {
+                                SecurityTokenExpiredException => "Token expirado. Faça login novamente.",
+                                null => "Acesso negado! Token não informado.",
+                                _ => "Token inválido."
+                            };
+
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                             context.Response.ContentType = "application/json";
-                            var mensagem = context.Exception is SecurityTokenExpiredException
-                                ? "Token expirado. Faça login novamente."
-                                : "Token inválido.";
+
                             var resposta = JsonSerializer.Serialize(new
                             {
                                 status = 401,
                                 message = mensagem
                             });
+
                             return context.Response.WriteAsync(resposta);
                         },
 
                         OnForbidden = context =>
                         {
-                            context.Response.StatusCode = 403;
+                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
                             context.Response.ContentType = "application/json";
-                            var mensagem = JsonSerializer.Serialize(new
+
+                            var resposta = JsonSerializer.Serialize(new
                             {
                                 status = 403,
                                 message = "Você não tem permissão para acessar este recurso."
                             });
-                            return context.Response.WriteAsync(mensagem);
+
+                            return context.Response.WriteAsync(resposta);
                         }
                     };
                 });

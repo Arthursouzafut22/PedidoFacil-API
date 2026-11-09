@@ -5,10 +5,11 @@ namespace PedidoFacil.Application.Mappers
 {
     public class CategoriaMapper
     {
-        public static Categoria ModeloCategoria(CriarCategoriaDTO dto)
+        public static Categoria ModeloCategoria(CriarCategoriaDTO dto, Guid usuarioId)
         {
             return new Categoria
-            {
+            {   
+                UsuarioId = usuarioId,
                 Nome = dto.Nome,
                 Ordem = dto.Ordem
             };

@@ -32,23 +32,40 @@ namespace PedidoFacil.Infrastructure.Settings
                     };
                 }).AddMvcOptions(options =>
                 {
-                    options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    var provider = options.ModelBindingMessageProvider;
+
+                    provider.SetValueMustNotBeNullAccessor(
                         value => "O campo é obrigatório.");
 
-                    options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
-                        (value, fieldName) => $"O valor '{value}' não é válido para o campo '{fieldName}'.");
+                    provider.SetMissingBindRequiredValueAccessor(
+                        fieldName => $"O campo '{fieldName}' é obrigatório.");
 
-                    options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(
+                    provider.SetMissingKeyOrValueAccessor(
                         () => "O campo é obrigatório.");
 
-                    options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(
+                    provider.SetMissingRequestBodyRequiredValueAccessor(
+                        () => "É necessário enviar um corpo de requisição (body) não vazio.");
+
+                    provider.SetAttemptedValueIsInvalidAccessor(
+                        (value, fieldName) => $"O valor '{value}' não é válido para o campo '{fieldName}'.");
+
+                    provider.SetUnknownValueIsInvalidAccessor(
+                        fieldName => $"O valor informado não é válido para o campo '{fieldName}'.");
+
+                    provider.SetValueIsInvalidAccessor(
                         value => $"O valor '{value}' não é válido.");
 
-                    options.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(
+                    provider.SetValueMustBeANumberAccessor(
                         fieldName => $"O campo '{fieldName}' deve ser um número.");
 
-                    options.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(
-                        () => "É necessário enviar um corpo de requisição (body) não vazio.");
+                    provider.SetNonPropertyAttemptedValueIsInvalidAccessor(
+                        value => $"O valor '{value}' não é válido.");
+
+                    provider.SetNonPropertyUnknownValueIsInvalidAccessor(
+                        () => "O valor informado não é válido.");
+
+                    provider.SetNonPropertyValueMustBeANumberAccessor(
+                        () => "O valor deve ser um número.");
                 });
 
             return services;

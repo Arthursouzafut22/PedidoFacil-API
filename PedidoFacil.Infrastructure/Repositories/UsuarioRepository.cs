@@ -5,25 +5,25 @@ using PedidoFacil.Infrastructure.Data;
 
 namespace PedidoFacil.Infrastructure.Repositories
 {
-    public class ClienteRepository : IClienteRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly AppDbContext _context;
-        public ClienteRepository(AppDbContext context) => _context = context;
+        public UsuarioRepository(AppDbContext context) => _context = context;
 
-        public async Task<Cliente> Criar(Cliente cliente)
+        public async Task<Usuario> Criar(Usuario usuario)
         {
-            await _context.AddAsync(cliente);
+            await _context.AddAsync(usuario);
             await _context.SaveChangesAsync();
-            return cliente;
+            return usuario;
         }
 
         public async Task<bool> EmailJaExiste(string email) =>
            await _context.Clientes.AnyAsync(c => c.Email == email);
 
-        public async Task<Cliente?> EncontrarClientePorEmail(string email) =>
+        public async Task<Usuario?> EncontrarUsuarioPorEmail(string email) =>
             await _context.Clientes.FirstOrDefaultAsync(c => c.Email == email);
 
-        public async Task<Cliente?> EncontrarClientePorId(Guid id) =>
+        public async Task<Usuario?> EncontrarUsuarioPorId(Guid id) =>
             await _context.Clientes.FirstOrDefaultAsync(c => c.Id == id);
     }
 }

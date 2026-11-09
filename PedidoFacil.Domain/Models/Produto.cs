@@ -3,6 +3,8 @@
     public class Produto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid UsuarioId { get; set; }
+        public Usuario Usuario { get; set; } = null!;
         public string Nome { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
         public string ImagemUrl { get; set; } = string.Empty;
