@@ -16,5 +16,10 @@
         public static string CategoriaLocalizadaComSucesso { get; } = "Categoria localizada com sucesso.";
         public static string CategoriaCadastradaComSucesso { get; } = "Categoria cadastrada com sucesso.";
         public static string CategoriaAtualizadaComSucesso { get; } = "Categoria atualizada com sucesso.";
+        public static string IdCategoriaAusenteNaUrl { get; } = "O ID da categoria não foi informado na URL.";
+        public static string UsuarioSemPermissaoParaAcessar { get; } = "Você não tem permissão para acessar este recurso.";
+        public static string UsuarioSemPermissaoParaEditar { get; } = "Você não tem permissão para editar este recurso.";
+        public static string UsuarioSemPermissaoParaExcluir { get; } = "Você não tem permissão para excluir este recurso.";
+        public static string CategoriaExcluidaComSucesso { get; } = "Categoria excluída com sucesso.";
     }
 }

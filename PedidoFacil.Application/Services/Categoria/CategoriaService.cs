@@ -64,7 +64,7 @@ namespace PedidoFacil.Application.Services.Categoria
             if (id is null)
             {
                 _logger.LogWarning("Tentativa de consultar uma categoria sem informa o ID.");
-                return ApiResposta<CategoriaRespostaDTO>.BadRequest("O ID da categoria não foi informado na URL.");
+                return ApiResposta<CategoriaRespostaDTO>.BadRequest(RespostaMensagem.IdCategoriaAusenteNaUrl);
             }
 
             var categoria = await _repository.BuscarCategoriaPorId(id);
@@ -77,7 +77,7 @@ namespace PedidoFacil.Application.Services.Categoria
             if (usuarioId != categoria?.UsuarioId)
             {
                 _logger.LogWarning("Tentativa de consultar uma categoria que não pertence a este administrador.");
-                return ApiResposta<CategoriaRespostaDTO>.Unauthorized("Você não tem permissão para acessar este recurso.");
+                return ApiResposta<CategoriaRespostaDTO>.Unauthorized(RespostaMensagem.UsuarioSemPermissaoParaAcessar);
             }
 
             var resposta = CategoriaMapper.MapearParaCategoriaRespostaDTO(categoria!);
@@ -91,7 +91,7 @@ namespace PedidoFacil.Application.Services.Categoria
             if (id is null)
             {
                 _logger.LogWarning("Tentativa de atualizar uma categoria sem informar o ID.");
-                return ApiResposta<CategoriaRespostaDTO>.BadRequest("O ID da categoria não foi informado na URL.");
+                return ApiResposta<CategoriaRespostaDTO>.BadRequest(RespostaMensagem.IdCategoriaAusenteNaUrl);
             }
 
             var categoria = await _repository.BuscarCategoriaPorId(id);
@@ -104,7 +104,7 @@ namespace PedidoFacil.Application.Services.Categoria
             if (categoria.UsuarioId != usuarioId)
             {
                 _logger.LogWarning("Tentativa de atualizar uma categoria que não pertence a este administrador.");
-                return ApiResposta<CategoriaRespostaDTO>.Unauthorized("Você não tem permissão para editar este recurso.");
+                return ApiResposta<CategoriaRespostaDTO>.Unauthorized(RespostaMensagem.UsuarioSemPermissaoParaEditar);
             }
 
             var categoriaComMesmoNome = await _repository.EncontrarCategoriaPorNome(dto.Nome, usuarioId);
@@ -135,7 +135,7 @@ namespace PedidoFacil.Application.Services.Categoria
             if (id is null)
             {
                 _logger.LogWarning("Tentativa de atualizar uma categoria sem informar o ID.");
-                return ApiResposta<CategoriaRespostaDTO>.BadRequest("O ID da categoria não foi informado na URL.");
+                return ApiResposta<CategoriaRespostaDTO>.BadRequest(RespostaMensagem.IdCategoriaAusenteNaUrl);
             }
 
             var categoria = await _repository.BuscarCategoriaPorId(id);
@@ -148,12 +148,12 @@ namespace PedidoFacil.Application.Services.Categoria
             if (categoria.UsuarioId != usuarioId)
             {
                 _logger.LogWarning("Tentativa de atualizar uma categoria que não pertence a este administrador.");
-                return ApiResposta<CategoriaRespostaDTO>.Unauthorized("Você não tem permissão para editar este recurso.");
+                return ApiResposta<CategoriaRespostaDTO>.Unauthorized(RespostaMensagem.UsuarioSemPermissaoParaExcluir);
             }
 
             await _repository.Deletar(categoria);
 
-            return ApiResposta<CategoriaRespostaDTO>.Ok(null, "Categoria excluida com sucesso.");
+            return ApiResposta<CategoriaRespostaDTO>.Ok(null, RespostaMensagem.CategoriaExcluidaComSucesso);
         }
     }
 }
