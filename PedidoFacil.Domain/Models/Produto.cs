@@ -12,6 +12,6 @@
         public bool Disponivel { get; set; } = true;
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
         public Guid CategoriaId { get; set; }
-        public Categoria Categoria { get; set; } = null!;
+        public Categoria Categoria { get; set; } = null!;//
     }
 }

@@ -7,21 +7,19 @@ namespace PedidoFacil.Controllers
 {
     [ApiController]
     [Route("api/categorias")]
-    public class CategoriaController : ControllerBase
+    public class CategoriasController : ControllerBase
     {
         private readonly ICategoriaService _service;
 
-        public CategoriaController(ICategoriaService service)
+        public CategoriasController(ICategoriaService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> BuscarTodasCategoria()
         {
-            var usuarioId = User.FindFirst("id")!.Value;
-            var categorias = await _service.BuscarTodasCategoria(Guid.Parse(usuarioId));
+            var categorias = await _service.BuscarTodasCategoria();
             return StatusCode(categorias.StatusCode, categorias);
         }
 
@@ -29,8 +27,7 @@ namespace PedidoFacil.Controllers
         [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> BuscarCategoriaPorId(Guid? id)
         {
-            var usuarioId = User.FindFirst("id")!.Value;
-            var categoria = await _service.BuscarCategoriaPorId(id, Guid.Parse(usuarioId));
+            var categoria = await _service.BuscarCategoriaPorId(id);
             return StatusCode(categoria.StatusCode, categoria);
         }
 

@@ -42,9 +42,9 @@ namespace PedidoFacil.Application.Services.Categoria
             return ApiResposta<CategoriaRespostaDTO>.Ok(resposta, RespostaMensagem.CategoriaCadastradaComSucesso);
         }
 
-        public async Task<ApiResposta<IEnumerable<CategoriaRespostaDTO>>> BuscarTodasCategoria(Guid usuarioId)
+        public async Task<ApiResposta<IEnumerable<CategoriaRespostaDTO>>> BuscarTodasCategoria()
         {
-            var categorias = await _repository.BuscarCategorias(usuarioId);
+            var categorias = await _repository.BuscarCategorias();
 
             if (!categorias.Any())
             {
@@ -59,7 +59,7 @@ namespace PedidoFacil.Application.Services.Categoria
                 .Ok(categoriasResposta, RespostaMensagem.CategoriasRetornadasComSucesso);
         }
 
-        public async Task<ApiResposta<CategoriaRespostaDTO>> BuscarCategoriaPorId(Guid? id, Guid? usuarioId)
+        public async Task<ApiResposta<CategoriaRespostaDTO>> BuscarCategoriaPorId(Guid? id)
         {
             if (id is null)
             {
@@ -72,12 +72,6 @@ namespace PedidoFacil.Application.Services.Categoria
             {
                 _logger.LogWarning("Tentativa de consultar uma categoria inexistente.");
                 return ApiResposta<CategoriaRespostaDTO>.NotFound(RespostaMensagem.CategoriaNaoEncontrada);
-            }
-
-            if (usuarioId != categoria?.UsuarioId)
-            {
-                _logger.LogWarning("Tentativa de consultar uma categoria que não pertence a este administrador.");
-                return ApiResposta<CategoriaRespostaDTO>.Unauthorized(RespostaMensagem.UsuarioSemPermissaoParaAcessar);
             }
 
             var resposta = CategoriaMapper.MapearParaCategoriaRespostaDTO(categoria!);

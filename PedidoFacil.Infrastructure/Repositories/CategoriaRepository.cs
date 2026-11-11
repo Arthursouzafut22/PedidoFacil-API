@@ -21,9 +21,9 @@ namespace PedidoFacil.Infrastructure.Repositories
             return await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Categoria>> BuscarCategorias(Guid usuarioId)
+        public async Task<IEnumerable<Categoria>> BuscarCategorias()
         {
-            return await _context.Categorias.Where(x => x.UsuarioId == usuarioId).ToListAsync();
+            return await _context.Categorias.ToListAsync();
         }
 
         public async Task<Categoria?> Cadastrar(Categoria categoria)
